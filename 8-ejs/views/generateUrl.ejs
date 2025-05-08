@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>URL Shortener</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #f0f2f5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 1rem;
+      }
+
+      .container {
+        background: #ffffff;
+        padding: 3rem 2rem;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        width: 100%;
+        max-width: 480px;
+        text-align: center;
+      }
+
+      h1 {
+        margin-bottom: 1.5rem;
+        font-size: 2.2rem;
+        color: #222;
+      }
+
+      label {
+        display: block;
+        text-align: left;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #444;
+        font-size: 1rem;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        transition: border-color 0.3s;
+      }
+
+      input[type="text"]:focus {
+        border-color: #007bff;
+        outline: none;
+      }
+
+      button,
+      .button {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 0.5rem;
+      }
+
+      button:hover,
+      .button:hover {
+        background-color: #0056b3;
+        box-shadow: 0 4px 12px rgba(0, 86, 179, 0.3);
+      }
+
+      .button {
+        background-color: #6c757d;
+        margin-top: 1.5rem;
+      }
+
+      .button:hover {
+        background-color: #5a6268;
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('./partials/navbar') %>
+    <div class="container">
+      <h1>URL Shortener</h1>
+      <form action="/api/url" method="POST">
+        <label for="redirectUrl">Enter Original URL:</label>
+        <input
+          type="text"
+          id="redirectUrl"
+          name="url"
+          placeholder="https://www.example.com"
+          required
+        />
+        <button type="submit">Generate Short URL</button>
+      </form>
+    </div>
+  </body>
+</html>
