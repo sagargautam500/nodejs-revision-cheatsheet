@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Details page</title>
+  </head>
+  <body>
+    <h1>All Details:</h1>
+    <ul>
+      <% urls.map((url)=>{ %>
+      <li>
+        <p><strong>Short Id:</strong><a href=""><%=url.shortId %></a></p>
+        <p>
+          <strong>Redirect Url:</strong>
+          <a href=""><%=url.redirectUrl %></a>
+        </p>
+        <p>
+          <strong>Total clicks in this link:</strong>
+          <span><%=url.visitHistory.length %></span>
+        </p>
+      </li>
+      <% }) %>
+    </ul>
+  </body>
+</html>
