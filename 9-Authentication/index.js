@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const connectToMongoDb = require("./connect");
 const {urlRouter, staticRouter} = require("./routes/url_router");
+const userRouter = require("./routes/user-router");
 
 const app = express();
 app.use(express.urlencoded({ extended: false })); 
@@ -13,6 +14,7 @@ app.set("views", path.resolve("./views"));
 
 app.use(staticRouter)
 app.use("/api/url", urlRouter); //handle routing middleware      
+app.use("/api/user",userRouter);
  
 connectToMongoDb()   
   .then(() => {

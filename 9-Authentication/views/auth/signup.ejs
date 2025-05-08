@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f0f2f5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+      }
+
+      .signup-container {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        color: #333;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+        padding: 0.6rem;
+        margin-bottom: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+      }
+
+      .checkbox-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+
+      .checkbox-container input {
+        margin-right: 0.5rem;
+      }
+
+      button {
+        width: 100%;
+        padding: 0.75rem;
+        background-color: #007bff;
+        border: none;
+        color: white;
+        font-size: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <%- include('../partials/navbar') %>
+    <div class="signup-container">
+      <h1>Register Your Details</h1>
+      <form action="/api/user/signup" method="POST">
+        <label for="name">Full Name</label>
+        <input type="text" name="name" id="name" required />
+
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" required />
+
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" required />
+
+        <!-- If you want to include confirm password for validation -->
+
+        <label for="confirm_password">Confirm Password</label>
+        <input
+          type="password"
+          name="confirm_password"
+          id="confirm_password"
+          required
+        />
+
+        <div class="checkbox-container">
+          <input type="checkbox" name="terms" id="terms" required />
+          <label for="terms">I agree to the Terms and Conditions</label>
+        </div>
+
+        <button type="submit">Register</button>
+      </form>
+      <div class="bottom-link">
+        <p>
+          if already have an account? <a href="/api/user/login">Login here</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
