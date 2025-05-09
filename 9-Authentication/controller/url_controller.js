@@ -26,6 +26,7 @@ exports.postNewShortUrl = async (req, res) => {
       shortId,
       redirectUrl: url,
       visitHistory: [],
+      createdBy: req.user._id,
     });
 
     return res.status(201).redirect("/api/url/analytics");
@@ -68,7 +69,10 @@ exports.getAllAnalyticsUrl = async (req, res) => {
   // console.log('originalUrl:',originalUrl);
   // console.log('host:',host);
   // console.log('Host:',req.headers.host)
-  const allUrls = await urlModel.find({});
+  if (!req.user) {
+    return res.redirect("/api/user/login");
+  }
+  const allUrls = await urlModel.find({ createdBy: req.user._id });
   res.render("allDetails", { urls: allUrls, host: host });
 };
 
@@ -82,7 +86,7 @@ exports.getSingleAnalyticsUrl = async (req, res) => {
     return res.status(404).json({ error: "Short URL not found" });
   }
 
-  return res.render("viewDetail", {
+  return res.render("viewDetail", { 
     totalClicks: entry.visitHistory.length,
     analytics: entry.visitHistory,
   });

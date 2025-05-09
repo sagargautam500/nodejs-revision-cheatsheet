@@ -1,4 +1,6 @@
+const { v4: uuidv4 } = require("uuid");
 const User = require("../model/user_model");
+const { setUser } = require("../service/auth");
 
 exports.getSignUp = (req, res) => {
   // console.log("original Url:", req.originalUrl);
@@ -29,9 +31,19 @@ exports.postSignUp = async (req, res) => {
 exports.getLogin = (req, res) => {
   // console.log("original Url:", req.originalUrl);
   // console.log("Host:", req.headers.host);
-  res.render("auth/login");
+  res.render("auth/login", { error: "" });
 };
 exports.postLogin = async (req, res) => {
-  console.log("body:", req.body);
-  res.json({ login_body: req.body });
+  // console.log("body:", req.body);
+  const { email, password } = req.body;
+  const user = await User.findOne({ email, password });
+  // console.log('user:',user)
+  if (!user) {
+    return res.render("auth/login", { error: "Invalid Email or Password" });
+  } else {
+    const token = setUser(user); //jwt.sign(user,'Sagar@123$$');
+    res.cookie("uid", token);
+    // res.json({token})
+    return res.redirect("/");
+  }
 };

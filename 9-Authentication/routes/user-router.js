@@ -7,4 +7,4 @@ userRouter.post("/signup", postSignUp);
 userRouter.get("/login", getLogin);
 userRouter.post("/login", postLogin);
 
-module.exports = userRouter;
+module.exports = userRouter; 
