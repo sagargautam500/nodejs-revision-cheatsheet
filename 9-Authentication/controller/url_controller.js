@@ -3,15 +3,26 @@ const urlModel = require("../model/url_model");
 
 // Home page
 exports.getHomePage = (req, res) => {
+  // if (!req.user) {
+  //   return res.redirect("/api/user/login");
+  // }
   res.render("home");
 };
+
 // Generate new Url
 exports.getGenerateNewUrl = (req, res) => {
+  if (!req.user) {
+    return res.redirect("/api/user/login");
+  }
   res.render("generateUrl");
 };
 
 // Generate and store a new short URL
 exports.postNewShortUrl = async (req, res) => {
+  if (!req.user) {
+    return res.redirect("/api/user/login");
+  }
+
   const { url } = req.body;
   // console.log(url);
 
@@ -19,21 +30,16 @@ exports.postNewShortUrl = async (req, res) => {
     return res.status(400).json({ error: "URL is required." });
   }
 
-  try {
-    const shortId = shortid();
+  const shortId = shortid();
 
-    await urlModel.create({
-      shortId,
-      redirectUrl: url,
-      visitHistory: [],
-      createdBy: req.user._id,
-    });
+  await urlModel.create({
+    shortId,
+    redirectUrl: url,
+    visitHistory: [],
+    createdBy: req.user._id,
+  });
 
-    return res.status(201).redirect("/api/url/analytics");
-  } catch (err) {
-    console.error("Error generating short URL:", err);
-    return res.status(500).json({ error: "Something went wrong." });
-  }
+  return res.status(201).redirect("/api/url/analytics");
 };
 
 // Redirect to the original URL using shortId
@@ -65,19 +71,22 @@ exports.getSingleShortUrl = async (req, res) => {
 // Render analytics view with all entries
 exports.getAllAnalyticsUrl = async (req, res) => {
   // const originalUrl=req.originalUrl
+  if (!req.user) {
+    return res.redirect("/api/user/login");
+  }
   const host = req.host;
   // console.log('originalUrl:',originalUrl);
   // console.log('host:',host);
   // console.log('Host:',req.headers.host)
-  if (!req.user) {
-    return res.redirect("/api/user/login");
-  }
   const allUrls = await urlModel.find({ createdBy: req.user._id });
   res.render("allDetails", { urls: allUrls, host: host });
 };
 
 // Return click analytics for a single short URL
 exports.getSingleAnalyticsUrl = async (req, res) => {
+  if (!req.user) {
+    return res.redirect("/api/user/login");
+  }
   const { shortId } = req.params;
 
   const entry = await urlModel.findOne({ shortId });
@@ -86,13 +95,16 @@ exports.getSingleAnalyticsUrl = async (req, res) => {
     return res.status(404).json({ error: "Short URL not found" });
   }
 
-  return res.render("viewDetail", { 
+  return res.render("viewDetail", {
     totalClicks: entry.visitHistory.length,
     analytics: entry.visitHistory,
   });
 };
 
 exports.deleteEntryUrl = async (req, res) => {
+  if (!req.user) {
+    return res.redirect("/api/user/login");
+  }
   const { shortId } = req.params;
   // console.log("Deleting shortId:", shortId);
   const deletedEntry = await urlModel.findOneAndDelete({ shortId });

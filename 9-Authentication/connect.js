@@ -7,3 +7,4 @@ const connectToMongoDb = async () => {
 };
 
 module.exports = connectToMongoDb;
+

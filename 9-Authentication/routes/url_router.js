@@ -6,13 +6,13 @@ const {
   postNewShortUrl,
   getHomePage,
   getAllAnalyticsUrl,
-  getSingleAnalyticsUrl
+  getSingleAnalyticsUrl, 
 } = require("../controller/url_controller");
 
 const urlRouter = express.Router();
-const staticRouter=express.Router();
+const staticRouter = express.Router();
 
-staticRouter.get('/',getHomePage)
+staticRouter.get("/", getHomePage);
 
 urlRouter.get("/", getGenerateNewUrl);
 urlRouter.post("/", postNewShortUrl);
@@ -23,4 +23,4 @@ urlRouter.post("/analytics/:shortId", getSingleAnalyticsUrl);
 urlRouter.post("/delete/:shortId", deleteEntryUrl);
 urlRouter.get("/:shortId", getSingleShortUrl);
 
-module.exports = {urlRouter,staticRouter};
+module.exports = { urlRouter, staticRouter };

@@ -1,87 +1,62 @@
-<div
-  style="
+<style>
+  .navbar {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    background-color: #ffffff;
+    background: linear-gradient(90deg, #007bff 60%, #0056b3 100%);
     display: flex;
-    justify-content:center;
+    justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
-    gap: 2rem;
-    padding: 1rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    gap: 1.5rem;
+    padding: 1rem 0.5rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
     z-index: 1000;
-  "
->
-  <a
-    href="/"
-    style="
-      background-color: #007bff;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    "
-  >
-    🏠 Home
-  </a>
-  <a
-    href="/api/url"
-    style="
-      background-color: #007bff;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    "
-  >
-    ➕ Generate URL
-  </a>
-  <a
-    href="/api/url/analytics"
-    style="
-      background-color: #007bff;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    "
-  >
-    📊 View All Details
-  </a>
-  <a
-    href="/api/user/login"
-    style="
-      background-color: #007bff;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    "
-  >
-    Login
-  </a>
-  <a
-    href="/api/user/signup"
-    style="
-      background-color: #007bff;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    "
-  >
-    Sign Up
-  </a>
+  }
+  .navbar a, .navbar button {
+    background: #fff;
+    color: #007bff;
+    padding: 10px 22px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    border: none;
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+    margin: 0 0.2rem;
+    cursor: pointer;
+  }
+  .navbar a:hover, .navbar button:hover {
+    background: #007bff;
+    color: #fff;
+    transform: translateY(-2px) scale(1.05);
+  }
+  @media (max-width: 600px) {
+    .navbar {
+      flex-direction: column;
+      gap: 0.7rem;
+      padding: 0.7rem 0.2rem;
+    }
+    .navbar a, .navbar button {
+      width: 90%;
+      text-align: center;
+      font-size: 0.98rem;
+    }
+  }
+</style>
+
+<div class="navbar">
+  <a href="/">🏠 Home</a>
+  <a href="/api/url">➕ Generate URL</a>
+  <a href="/api/url/analytics">📊 View All Details</a>
+  <% if (!user) { %>
+    <a href="/api/user/login">Login</a>
+    <a href="/api/user/signup">Sign Up</a>
+  <% } else { %>
+    <form action="/api/user/logout" method="POST" style="display: inline;">
+      <button type="submit">Logout</button>
+    </form>
+  <% } %>
 </div>

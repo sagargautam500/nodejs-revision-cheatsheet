@@ -10,15 +10,16 @@ exports.getSignUp = (req, res) => {
 
 exports.postSignUp = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
     const terms = req.body.terms === "on"; // Convert to boolean
 
     const user = new User({
       name,
       email,
       password,
+      role,
       terms,
-    });
+    }); 
 
     await user.save();
     res.redirect("/api/user/login");
@@ -42,8 +43,13 @@ exports.postLogin = async (req, res) => {
     return res.render("auth/login", { error: "Invalid Email or Password" });
   } else {
     const token = setUser(user); //jwt.sign(user,'Sagar@123$$');
-    res.cookie("uid", token);
+    res.cookie("token", token);
     // res.json({token})
     return res.redirect("/");
   }
+};
+
+exports.postLogout = (req, res) => {
+  res.clearCookie("token");
+  res.redirect("/api/user/login");
 };
