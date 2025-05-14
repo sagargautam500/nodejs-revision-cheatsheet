@@ -1,27 +1,32 @@
-const { createHash, randomBytes } = require("crypto"); //core module
-const { default: mongoose } = require("mongoose"); //external module
+const bcrypt = require("bcrypt");
+const mongoose = require("mongoose");
 
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
   fullName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  salt: { type: String, required: true },
   password: { type: String, required: true },
   role: { type: String, enum: ["admin", "user"], default: "user" },
   profileImageUrl: { type: String, default: "/images/defaultProfile.jpg" },
+},{timestamps:true});
+
+// Hash password before saving
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+
+  try {
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(this.password, saltRounds);
+    this.password = hashedPassword;
+    next();
+  } catch (err) {
+    return next(err);
+  }
 });
 
-userSchema.pre("save", function (next) {
-  const user = this;
-  if (!user.isModified("password")) return;
-  const salt = randomBytes(16).toString();
-  const hashPassword = createHash("sha256", salt)
-    .update(user.password)
-    .digest("hex");
+// Method to validate password
+userSchema.methods.validatePassword = async function (inputPassword) {
+  return bcrypt.compare(inputPassword, this.password);
+};
 
-  this.salt = salt;
-  this.password = hashPassword;
-  next();
-});
-
-const User = mongoose.model("user", userSchema);
+const User = mongoose.model("User", userSchema);
 module.exports = User;

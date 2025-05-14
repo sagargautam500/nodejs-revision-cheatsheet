@@ -1,16 +1,40 @@
 const path = require("path");
 const express = require("express");
+const { default: mongoose } = require("mongoose");
+const cookieParser = require("cookie-parser");
 const homeRouter = require("./routes/home_router");
 const userRouter = require("./routes/user_router");
+const checkAuthentication = require("./middleware/authentication");
+const blogRouter = require("./routes/blog_router");
 
 const app = express();
 
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
 
-app.use(homeRouter);
-app.use('/user',userRouter);
+app.use(express.urlencoded({extended:false}));
+app.use(cookieParser());
+app.use(checkAuthentication());
+// ✅ Then set locals.user globally
+app.use((req, res, next) => {
+  res.locals.user = req.user || null;
+  next();
+});
 
+app.use(homeRouter);
+app.use(blogRouter);
+app.use("/user", userRouter);
+
+const dbPath =
+  "mongodb+srv://sagargautam389:sagargautam389@usercluster.tmvdaad.mongodb.net/blogify?retryWrites=true&w=majority&appName=userCluster";
+mongoose
+  .connect(dbPath)
+  .then(() => {
+    console.log("database connected...");
+  })
+  .catch((err) => {
+    console.log("Error occur while database connect:", err);
+  });
 const PORT = 3002;
 app.listen(PORT, () => {
   console.log(`server running at http://localhost:${PORT}`);

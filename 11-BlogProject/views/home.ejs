@@ -1,17 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <%- include('./partials/head') %>
-  <title>Home</title> <!-- Only if not defined in head partial -->
-</head>
-<body>
-  <%- include('./partials/nav') %>
+  <head>
+    <%- include('./partials/head') %>
+    <title>Blogify | Home</title>
+    <style>
+      .hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+          url("/images/blog-hero.jpg") center/cover no-repeat;
+        color: white;
+        padding: 100px 20px;
+        text-align: center;
+        border-radius: 10px;
+      }
 
-  <main>
-    <h1>Welcome to the Home Page</h1>
-    <p>This is the starting point of the file upload system.</p>
-  </main>
+      .hero h1 {
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
 
-  <%- include('./partials/script') %>
-</body>
+      .hero p {
+        font-size: 1.25rem;
+        margin-bottom: 30px;
+      }
+
+      .btn-get-started {
+        font-size: 1rem;
+        padding: 10px 25px;
+        border-radius: 25px;
+      }
+
+      .features {
+        padding: 60px 0;
+        text-align: center;
+      }
+
+      .features h2 {
+        font-weight: bold;
+        margin-bottom: 40px;
+      }
+
+      .feature-box {
+        padding: 20px;
+      }
+
+      .feature-icon {
+        font-size: 2.5rem;
+        color: #007bff;
+        margin-bottom: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('./partials/nav') %>
+
+    <!-- Hero Section -->
+    <section class="hero container mt-4">
+      <h1>Welcome to Blogify</h1>
+      <p>
+        Discover stories, share your ideas, and connect with others on Blogify —
+        your personal blogging companion.
+      </p>
+      <% if(user){ %>
+      <a href="/addblogs" class="btn btn-primary btn-get-started"
+        >Get Started</a
+      >
+      <% } else{ %>
+      <a href="/user/signin" class="btn btn-primary btn-get-started"
+        >Get Started</a
+      >
+      <% }%>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features container">
+      <h2>Why Blogify?</h2>
+      <div class="row">
+        <div class="col-md-4 feature-box">
+          <div class="feature-icon">
+            <i class="bi bi-pencil-square"></i>
+          </div>
+          <h5>Create and Publish</h5>
+          <p>
+            Write beautiful posts and publish them instantly to your followers
+            and the world.
+          </p>
+        </div>
+        <div class="col-md-4 feature-box">
+          <div class="feature-icon">
+            <i class="bi bi-chat-dots"></i>
+          </div>
+          <h5>Engage & Interact</h5>
+          <p>
+            Receive feedback, start discussions, and build your reader
+            community.
+          </p>
+        </div>
+        <div class="col-md-4 feature-box">
+          <div class="feature-icon">
+            <i class="bi bi-bar-chart-line"></i>
+          </div>
+          <h5>Track Your Growth</h5>
+          <p>View stats and insights on how your blogs perform over time.</p>
+        </div>
+      </div>
+    </section>
+
+    <%- include('./partials/script') %>
+  </body>
 </html>
