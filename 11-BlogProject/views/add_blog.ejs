@@ -15,7 +15,21 @@
           <div class="alert alert-danger">${error}</div>
           ` : '' %>
 
-          <form action="/addblogs" method="POST">
+          <form action="/addblogs" method="POST" enctype="multipart/form-data">
+            <!--Cover Image Upload -->
+            <div class="mb-3">
+              <label for="blogImage" class="form-label"
+                >Upload Blog Image (optional)</label
+              >
+              <input
+                class="form-control"
+                type="file"
+                id="blogImage"
+                name="blogImage"
+                accept="image/*"
+              />
+            </div>
+
             <!-- Title -->
             <div class="mb-3">
               <label for="title" class="form-label">Blog Title</label>
@@ -31,14 +45,15 @@
 
             <!-- Category -->
             <div class="mb-3">
-              <label for="category" class="form-label">Category</label>
+              <label for="category" class="form-label"
+                >Category(optional)</label
+              >
               <input
                 type="text"
                 class="form-control"
                 id="category"
                 name="category"
                 value="<%= blog ? blog.category : '' %>"
-                required
               />
             </div>
 
@@ -54,20 +69,6 @@
               >
                  <%= blog ? blog.content : '' %>
               </textarea>
-            </div>
-
-            <!-- Image Upload -->
-            <div class="mb-3">
-              <label for="blogImage" class="form-label"
-                >Upload Blog Image (optional)</label
-              >
-              <input
-                class="form-control"
-                type="file"
-                id="blogImage"
-                name="blogImage"
-                accept="image/*"
-              />
             </div>
 
             <!-- Submit Button -->

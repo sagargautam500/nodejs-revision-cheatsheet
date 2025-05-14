@@ -14,6 +14,10 @@ app.set("views", path.resolve("./views"));
 
 app.use(express.urlencoded({extended:false}));
 app.use(cookieParser());
+
+// app.use('/uploads',express.static(path.join(__dirname, "public/uploads")));
+app.use('/uploads',express.static(path.resolve("public/uploads")));
+
 app.use(checkAuthentication());
 // ✅ Then set locals.user globally
 app.use((req, res, next) => {
