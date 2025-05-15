@@ -16,6 +16,7 @@ app.use(express.urlencoded({extended:false}));
 app.use(cookieParser());
 
 // app.use('/uploads',express.static(path.join(__dirname, "public/uploads")));
+app.use('/images',express.static(path.resolve("public/images")));
 app.use('/uploads',express.static(path.resolve("public/uploads")));
 
 app.use(checkAuthentication());
@@ -24,7 +25,7 @@ app.use((req, res, next) => {
   res.locals.user = req.user || null;
   next();
 });
-
+ 
 app.use(homeRouter);
 app.use(blogRouter);
 app.use("/user", userRouter);

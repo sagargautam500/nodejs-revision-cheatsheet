@@ -2,34 +2,49 @@
 <html lang="en">
   <head>
     <%- include('./partials/head') %>
-    <title>Add Blog</title>
+    <title><%= blog.title %> | Blog Details</title>
   </head>
   <body>
     <%- include('./partials/nav') %>
-    <!-- Latest Blogs Section -->
+
+    <!-- Blog Details Section -->
     <section class="container my-5">
-      <h2 class="text-center mb-4">Latest Blogs</h2>
-      <div class="row">
-        <div class="col-md-4 mb-4">
-          <div class="card h-100 shadow-sm">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <!-- Title and Category -->
+          <h1 class="mb-3 fw-bold text-primary"><%= blog.title %></h1>
+          <p class="text-muted mb-4">Category: <%= blog.category %></p>
+
+          <!-- Blog Image -->
+          <% if (blog.blogImageUrl) { %>
+          <img
+            src="<%= blog.blogImageUrl %>"
+            alt="<%= blog.title %>"
+            class="img-fluid rounded mb-4"
+            style="max-height: 500px; object-fit: cover; width: 100%"
+          />
+          <% } %>
+
+          <!-- Blog Content -->
+          <div class="blog-content fs-5 lh-lg mb-5"><%= blog.content %></div>
+
+          <!-- Author Info -->
+          <div class="d-flex align-items-center gap-3 mb-4 border-top pt-3">
             <img
-              src="<%= blog.blogImageUrl%>"
-              class="card-img-top"
-              alt="<%= blog.title %>"
-              style="height: 200px; object-fit: cover"
+              src="<%= blog.createdBy.profileImageUrl %>"
+              alt="Author"
+              class="rounded-circle"
+              style="width: 50px; height: 50px; object-fit: cover"
             />
-            <div class="card-body">
-              <h5 class="card-title"><%= blog.title %></h5>
-              <p class="card-text text-muted"><%= blog.category %></p>
-              <p class="card-text" style="max-height: 100px; overflow: hidden">
-                <%= blog.content.substring(0, 120) %>...
-              </p>
-              <a href="#" class="btn btn-primary btn-sm">Read More</a>
+            <div>
+              <h6 class="mb-0"><%= blog.createdBy.fullName %></h6>
+              <small class="text-muted">Author</small>
             </div>
           </div>
         </div>
       </div>
     </section>
+
     <%- include('./partials/script') %>
   </body>
 </html>

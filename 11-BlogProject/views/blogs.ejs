@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head') %>
+    <title>Add Blog</title>
+  </head>
+  <body>
+    <%- include('./partials/nav') %>
+
+    <!-- Latest Blogs Section -->
+    <section class="container my-5">
+      <h1 class="text-center mb-4">Latest Blogs</h1>
+
+      <% if (blogs.length === 0) { %>
+        <h3 class="text-center text-muted mb-5">
+          No blogs available. Please add your first blog.
+        </h3>
+      <% } %>
+
+      <div class="row">
+        <% blogs.forEach(blog => { %>
+          <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+              <div class="card-img-top" style="height: 300px; overflow: hidden;">
+                <img
+                  src="<%= blog.blogImageUrl %>"
+                  alt="<%= blog.title %>"
+                  class="w-100 h-100"
+                  style="object-fit: cover;"
+                />
+              </div>
+              <div class="card-body">
+                <h5 class="card-title"><%= blog.title %></h5>
+                <p class="card-text text-muted mb-1"><%= blog.category %></p>
+                <a href="/blogs/<%= blog._id %>" class="btn btn-primary btn-sm mt-2">Read More</a>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </section>
+
+    <%- include('./partials/script') %>
+  </body>
+</html>
