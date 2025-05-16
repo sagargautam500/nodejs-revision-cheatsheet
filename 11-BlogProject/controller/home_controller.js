@@ -1,21 +1,36 @@
-const Blog = require("../model/blog_model");
-const Comment = require("../model/comment_model");
+const Blog=require('../model/blog_model');
+const Comment = require('../model/comment_model');
 
 exports.getHomePage = async (req, res) => {
-  // console.log(req.method,req.url,req.headers.host)
-  // console.log('home page user:',req.user)
-  const blogs = await Blog.find({})
-    .populate("createdBy")
-    .sort({ createdAt: -1 });
-  // console.log(blogs);
+  try {
+    // const blogs = await Blog.find({})
+    //   .populate("createdBy")
+    //   .populate({
+    //     path: "comments",
+    //     populate: { path: "createdBy", select: "fullName profileImageUrl" },
+    //   })
+    //   .sort({ createdAt: -1 });
 
-  // const comments = await Comment.find({})
-  //   .populate("blogId")
-  //   .populate("createdBy");
+    const blogs = await Blog.find({})
+      .populate("createdBy")
+      .sort({ createdAt: -1 })
+      .lean(); // lean() makes rendering faster and lighter
 
-  const totalComments = await Comment.find({}).populate("blogId", "_id");
-  const blogId=totalComments.blogId._id;
-  console.log(blogId)
+    // Attach latest 1 comment manually to each blog
+    for (let blog of blogs) {
+      const latestComment = await Comment.find({ blogId: blog._id })
+        .sort({ createdAt: -1 })
+        .limit(1)
+        .populate("createdBy", "fullName profileImageUrl")
+        .lean();
 
-  res.render("home", { blogs ,comments:''});
+      blog.latestComment = latestComment[0]; // undefined if no comment
+    }
+
+
+    res.render("home", { blogs });
+  } catch (err) {
+    console.log("Home Page Error:", err);
+    res.status(500).send("Internal Server Error");
+  }
 };

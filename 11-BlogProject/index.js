@@ -20,7 +20,7 @@ app.use('/images',express.static(path.resolve("public/images")));
 app.use('/uploads',express.static(path.resolve("public/uploads")));
 
 app.use(checkAuthentication());
-// ✅ Then set locals.user globally
+// ✅ Then set locals.user globally 
 app.use((req, res, next) => {
   res.locals.user = req.user || null;
   next();

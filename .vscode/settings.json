@@ -6,6 +6,8 @@
     "Bhaktapur",
     "Blogify",
     "blogproject",
+    "deleteblogs",
+    "editblogs",
     "Radhe",
     "restapi",
     "Sagar",
@@ -13,6 +15,7 @@
     "startexpress",
     "userdetail",
     "userdetails",
-    "uuidv"
+    "uuidv",
+    "virtuals"
   ]
 }

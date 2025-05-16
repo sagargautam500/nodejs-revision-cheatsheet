@@ -33,6 +33,8 @@
                 <h5 class="card-title"><%= blog.title %></h5>
                 <p class="card-text text-muted mb-1"><%= blog.category %></p>
                 <a href="/blogs/<%= blog._id %>" class="btn btn-primary btn-sm mt-2">Read More</a>
+                <a href="/editblogs/<%= blog._id %>" class="btn btn-primary btn-sm mt-2">Edit</a>
+                <a href="/deleteblogs/<%= blog._id %>" class="btn btn-primary btn-sm mt-2">Delete</a>
               </div>
             </div>
           </div>
