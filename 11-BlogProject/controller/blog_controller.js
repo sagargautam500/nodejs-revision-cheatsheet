@@ -13,8 +13,16 @@ exports.getEditBlog = async (req, res) => {
 };
 
 exports.getBlogs = async (req, res) => {
-  const userId = req.user._id;
-  const blogs = await Blog.find({ createdBy: userId }).sort({ createdAt: -1 });
+  
+    if (!req.user) {
+      return res.status(400).render("signin", {
+        error: "sign in first",
+        email:'',
+      });
+    }
+    const userId = req.user._id;
+    const blogs = await Blog.find({ createdBy: userId }).sort({ createdAt: -1 });
+ 
   // console.log(blogs);
   res.render("blogs", { blogs });
 };

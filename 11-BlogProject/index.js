@@ -25,7 +25,7 @@ app.use((req, res, next) => {
   res.locals.user = req.user || null;
   next();
 });
- 
+  
 app.use(homeRouter);
 app.use(blogRouter);
 app.use("/user", userRouter);

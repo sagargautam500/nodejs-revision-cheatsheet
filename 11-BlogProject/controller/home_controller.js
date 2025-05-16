@@ -34,3 +34,20 @@ exports.getHomePage = async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 };
+
+
+// Search Controller
+exports.getSearch=async (req, res) => {
+  const query = req.query.q;
+
+  try {
+    const results = await Blog.find({
+      title: { $regex: query, $options: 'i' }, // case-insensitive search
+    }).populate("createdBy");
+    res.render('search-results', { results, query });
+  } catch (err) {
+    res.status(500).send('Error while searching');
+  }
+};
+
+

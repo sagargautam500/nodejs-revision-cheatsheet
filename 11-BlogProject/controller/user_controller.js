@@ -1,3 +1,4 @@
+const { validationResult } = require('express-validator');
 const User = require("../model/user-model");
 const { createTokenForUser } = require("../services/authentication");
 
@@ -5,23 +6,23 @@ const { createTokenForUser } = require("../services/authentication");
 exports.getSignup = (req, res) => {
   // console.log(req.cookies.token)
   // console.log(req.user);
-  res.render("signup", { error: "", user: "" });
+  res.render("signup", { error: "", userData: "" });
 };
 
 // Handle Signup Form Submission
 exports.postSignup = async (req, res) => {
-  const { fullName, email, password, confirmPassword, role } = req.body;
+  const errors = validationResult(req);
 
-  // Check password confirmation
-  if (password !== confirmPassword) {
-    return res.status(400).render("signup", {
-      error: "Passwords do not match",
-      user: req.body,
+  if (!errors.isEmpty()) {
+    return res.status(400).render('signup', {
+      error: errors.array().map(err => err.msg).join('<br>'),
+      userData: req.body,
     });
   }
 
+  const { fullName, email, password, role } = req.body;
+
   try {
-    // Attempt to create user
     await User.create({
       fullName,
       email: email.trim().toLowerCase(),
@@ -29,23 +30,21 @@ exports.postSignup = async (req, res) => {
       role,
     });
 
-    // Redirect to signin page after success
-    res.redirect("/user/signin");
+    res.redirect('/user/signin');
   } catch (err) {
-    let errorMsg = "Something went wrong";
+    let errorMsg = 'Something went wrong';
 
-    // Duplicate email error (MongoDB error code 11000)
     if (err.code === 11000) {
-      errorMsg = "Email already exists";
+      errorMsg = 'Email already exists';
     }
 
-    // Render signup page with error
-    res.status(400).render("signup", {
+    res.status(400).render('signup', {
       error: errorMsg,
-      user: req.body,
+      userData: req.body,
     });
   }
 };
+
 
 // Render Signin Page
 exports.getSignin = (req, res) => {
