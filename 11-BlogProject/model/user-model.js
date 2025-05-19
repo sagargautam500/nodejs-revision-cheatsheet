@@ -1,13 +1,20 @@
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema({
-  fullName: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  role: { type: String, enum: ["admin", "user"], default: "user" },
-  profileImageUrl: { type: String, default: "/images/defaultProfile.jpg" },
-},{timestamps:true});
+const userSchema = new mongoose.Schema(
+  {
+    fullName: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    role: { type: String, enum: ["admin", "user"], default: "user" },
+    profileImage: {
+      data: Buffer,
+      contentType: String,
+      // default: "/images/defaultProfile.jpg"
+    },
+  },
+  { timestamps: true }
+);
 
 // Hash password before saving
 userSchema.pre("save", async function (next) {
@@ -20,7 +27,7 @@ userSchema.pre("save", async function (next) {
     next();
   } catch (err) {
     return next(err);
-  } 
+  }
 });
 
 // Method to validate password

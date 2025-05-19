@@ -33,9 +33,9 @@
           <div class="alert alert-danger"><%- error %></div>  <!-- means “render as raw HTML” -->
           <% } %>
 
-          <form action="/user/signup" method="POST">
+          <form action="/user/signup" method="POST" enctype="multipart/form-data">
             <!-- Profile Image -->
-            <!-- <div class="mb-3">
+            <div class="mb-3">
               <label for="profileImage" class="form-label">Profile Image</label>
               <input
                 type="file"
@@ -44,7 +44,7 @@
                 name="profileImage"
                 accept="image/*"
               />
-            </div> -->
+            </div>
 
             <!-- Full Name -->
             <div class="mb-3">

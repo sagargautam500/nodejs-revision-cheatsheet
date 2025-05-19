@@ -1,4 +1,4 @@
-const { validationResult } = require('express-validator');
+const { validationResult } = require("express-validator");
 const User = require("../model/user-model");
 const { createTokenForUser } = require("../services/authentication");
 
@@ -9,13 +9,24 @@ exports.getSignup = (req, res) => {
   res.render("signup", { error: "", userData: "" });
 };
 
-// Handle Signup Form Submission
+/// Handle Signup Form Submission
 exports.postSignup = async (req, res) => {
+  // console.log(req.file);
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return res.status(400).render('signup', {
-      error: errors.array().map(err => err.msg).join('<br>'),
+    return res.status(400).render("signup", {
+      error: errors
+        .array()
+        .map((err) => err.msg)
+        .join("<br>"),
+      userData: req.body,
+    });
+  }
+
+  if (req.file && !req.file.mimetype.startsWith("image/")) {
+    return res.status(400).render("signup", {
+      error: "Only image files are allowed",
       userData: req.body,
     });
   }
@@ -23,28 +34,48 @@ exports.postSignup = async (req, res) => {
   const { fullName, email, password, role } = req.body;
 
   try {
-    await User.create({
+    const userData = {
       fullName,
       email: email.trim().toLowerCase(),
       password,
       role,
-    });
+    };
 
-    res.redirect('/user/signin');
-  } catch (err) {
-    let errorMsg = 'Something went wrong';
-
-    if (err.code === 11000) {
-      errorMsg = 'Email already exists';
+    // If image is uploaded, attach it
+    if (req.file) {
+      userData.profileImage = {
+        data: req.file.buffer,
+        contentType: req.file.mimetype,
+      };
     }
 
-    res.status(400).render('signup', {
+    await User.create(userData);
+
+    res.redirect("/user/signin");
+  } catch (err) {
+    let errorMsg = "Something went wrong";
+
+    if (err.code === 11000) {
+      errorMsg = "Email already exists";
+    }
+
+    res.status(400).render("signup", {
       error: errorMsg,
       userData: req.body,
     });
   }
 };
 
+// get profile image
+exports.getProfileImage = async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (!user || !user.profileImage || !user.profileImage.data) {
+    return res.redirect("/images/defaultProfile.jpg");
+  }
+
+  res.set("Content-Type", user.profileImage.contentType);
+  res.send(user.profileImage.data);
+};
 
 // Render Signin Page
 exports.getSignin = (req, res) => {
@@ -90,8 +121,8 @@ exports.postSignin = async (req, res) => {
 
 exports.getLogout = (req, res) => {
   // Clear the cookie named 'token'
-  res.clearCookie('token');
+  res.clearCookie("token");
 
   // Optionally, redirect to login or home page
-  res.redirect('/user/signin');
+  res.redirect("/user/signin");
 };

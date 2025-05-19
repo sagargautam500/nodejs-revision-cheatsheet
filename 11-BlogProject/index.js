@@ -6,6 +6,7 @@ const homeRouter = require("./routes/home_router");
 const userRouter = require("./routes/user_router");
 const checkAuthentication = require("./middleware/authentication");
 const blogRouter = require("./routes/blog_router");
+const { dbPath } = require("./config/configuration");
 
 const app = express();
 
@@ -30,8 +31,7 @@ app.use(homeRouter);
 app.use(blogRouter);
 app.use("/user", userRouter);
 
-const dbPath =
-  "mongodb+srv://sagargautam389:sagargautam389@usercluster.tmvdaad.mongodb.net/blogify?retryWrites=true&w=majority&appName=userCluster";
+
 mongoose
   .connect(dbPath)
   .then(() => {

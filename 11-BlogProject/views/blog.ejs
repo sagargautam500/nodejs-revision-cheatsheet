@@ -87,7 +87,9 @@
           <!-- Header -->
           <div class="blog-header text-center">
             <h1 class="display-4 fw-bold mb-3"><%= blog.title %></h1>
-            <span class="badge bg-primary bg-gradient rounded-pill fs-6 px-4 py-2">
+            <span
+              class="badge bg-primary bg-gradient rounded-pill fs-6 px-4 py-2"
+            >
               <%= blog.category %>
             </span>
           </div>
@@ -105,14 +107,13 @@
           <% } %>
 
           <!-- Blog Content -->
-          <div class="blog-content mb-5">
-            <%= blog.content %>
-          </div>
+          <div class="blog-content mb-5"><%= blog.content %></div>
 
           <!-- Author Info -->
+          <% if (blog.createdBy) { %>
           <div class="author-card d-flex align-items-center gap-4 mb-5">
             <img
-              src="<%= blog.createdBy.profileImageUrl %>"
+              src="/user/profile-image/<%= blog.createdBy._id %>"
               alt="Author"
               class="rounded-circle shadow-sm"
               style="width: 80px; height: 80px; object-fit: cover"
@@ -122,7 +123,7 @@
               <p class="text-muted mb-0">Published on <%= blog.createdAt %></p>
             </div>
           </div>
-
+          <% } %>
           <!-- Comment Form -->
           <div class="comment-form mb-5">
             <h4 class="mb-4 fw-bold">Share Your Thoughts</h4>
@@ -146,42 +147,42 @@
           <!-- Comments Section -->
           <div class="comments-section">
             <h4 class="mb-4 fw-bold">
-              <%= blog.comments.length %> Comment<%= blog.comments.length !== 1 ? 's' : '' %>
+              <%= blog.comments.length %> Comment<%= blog.comments.length !== 1
+              ? 's' : '' %>
             </h4>
-            
+
             <% if (blog.comments && blog.comments.length > 0) { %>
-              <div class="comments-list">
-                <% blog.comments.forEach(comment => { %>
-                <div class="comment-card p-4">
-                  <div class="d-flex align-items-center gap-3 mb-3">
-                    <img
-                      src="<%= comment.createdBy?.profileImageUrl %>"
-                      alt="User"
-                      class="comment-avatar rounded-circle"
-                    />
-                    <div>
-                      <h5 class="mb-0 fw-semibold">
-                        <%= comment.createdBy?.fullName || 'Anonymous' %>
-                      </h5>
-                      <small class="text-muted">
-                        <%= comment.createdAt.toLocaleDateString('en-US', { 
-                          month: 'short', 
-                          day: 'numeric', 
-                          hour: '2-digit', 
-                          minute: '2-digit' 
-                        }) %>
-                      </small>
-                    </div>
+            <div class="comments-list">
+              <% blog.comments.forEach(comment => { %>
+              <div class="comment-card p-4">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                  <img
+                    src="/user/profile-image/<%= comment.createdBy?._id %>"
+                    alt="User"
+                    class="comment-avatar rounded-circle"
+                  />
+                  <div>
+                    <h5 class="mb-0 fw-semibold">
+                      <%= comment.createdBy?.fullName || 'Anonymous' %>
+                    </h5>
+                    <small class="text-muted">
+                      <%= comment.createdAt.toLocaleDateString('en-US', { month:
+                      'short', day: 'numeric', hour: '2-digit', minute:
+                      '2-digit' }) %>
+                    </small>
                   </div>
-                  <p class="mb-0 text-muted"><%= comment.content %></p>
                 </div>
-                <% }) %>
+                <p class="mb-0 text-muted"><%= comment.content %></p>
               </div>
+              <% }) %>
+            </div>
             <% } else { %>
-              <div class="text-center py-5 bg-light rounded-3">
-                <i class="bi bi-chat-dots fs-1 text-muted mb-3"></i>
-                <p class="text-muted mb-0">No comments yet. Be the first to share your thoughts!</p>
-              </div>
+            <div class="text-center py-5 bg-light rounded-3">
+              <i class="bi bi-chat-dots fs-1 text-muted mb-3"></i>
+              <p class="text-muted mb-0">
+                No comments yet. Be the first to share your thoughts!
+              </p>
+            </div>
             <% } %>
           </div>
         </div>

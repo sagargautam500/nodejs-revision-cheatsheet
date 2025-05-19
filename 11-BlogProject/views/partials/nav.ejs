@@ -35,7 +35,14 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            <%= locals.user.fullName || "User" %>
+            <img
+              src="/user/profile-image/<%= locals.user._id %>"
+              alt="Profile Image"
+              onerror="this.onerror=null; this.src='/images/defaultProfile.jpg';"
+              class="rounded-circle me-2"
+              style="width: 30px; height: 30px; object-fit: cover"
+            />
+            <span><%= locals.user.fullName || "User" %></span>
           </a>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="/user/logout">Logout</a></li>

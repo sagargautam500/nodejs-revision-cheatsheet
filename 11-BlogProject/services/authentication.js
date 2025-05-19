@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
-
-const secret = "$sagarGtm$$$@389";
+const { secret } = require("../config/configuration");
 
 function createTokenForUser(user) {
   const payload = {
@@ -8,7 +7,7 @@ function createTokenForUser(user) {
     fullName: user.fullName,
     email: user.email,
     role: user.role,
-    profileImageUrl: user.profileImageUrl
+    profileImageUrl: user.profileImageUrl,
   };
   return jwt.sign(payload, secret);
 }
